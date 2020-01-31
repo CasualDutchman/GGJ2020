@@ -1,0 +1,3 @@
+[submodule "Assets/Util"]
+	path = Assets/Util
+	url = https://github.com/CasualDutchman/Util
