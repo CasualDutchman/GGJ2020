@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
 	public LayerMask PlatformMask;
 	public LayerMask PlayerMask;
+	public LayerMask InteractableMask;
 
 	public float Speed;
 
@@ -21,6 +22,11 @@ public class Player : MonoBehaviour
 	float velocityDamping = 0.05f;
 
 	CapsuleCollider2D collider2d;
+
+	bool fallThrough = false;
+	bool falling = false;
+
+	bool CanMove = true;
 
 	void Start()
 	{
@@ -34,18 +40,47 @@ public class Player : MonoBehaviour
 		movement = move;
 	}
 
-	void OnAction()
-	{
+	public bool press = false;
 
+	void OnAction(InputValue value)
+	{
+		var v = value.Get<float>();
+
+		var newpress = v > 0.1f;
+
+		var hitcol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.5f), 0.5f, InteractableMask);
+
+		if (hitcol != null && hitcol.TryGetComponent(out Interactable s))
+		{
+			if (newpress != press)
+			{
+				if(newpress)
+				{
+					s.PressDown();
+				}
+				else
+				{
+					s.PressUp();
+				}
+			}
+		}
+
+		press = newpress;
 	}
 
-	bool fallThrough = false;
-	bool falling = false;
+	void Update()
+	{
+		if (press)
+		{
+			var hitcol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.5f), 0.5f, InteractableMask);
+
+			if (hitcol != null && hitcol.TryGetComponent(out Interactable s))
+				s.Hold();
+		}
+	}
 
 	void FixedUpdate()
 	{
-		var y = OnLadder ? movement.y * 3 : rigid2d.velocity.y;
-
 		if (movement.y < -0.2f)
 			fallThrough = true;
 		else 
@@ -68,6 +103,13 @@ public class Player : MonoBehaviour
 			falling = false;
 		}
 
-		rigid2d.velocity = Vector2.SmoothDamp(rigid2d.velocity, new Vector2(movement.x * 3, y), ref velocity, velocityDamping);
+		if(CanMove)
+			rigid2d.velocity = Vector2.SmoothDamp(rigid2d.velocity, new Vector2(movement.x * 3, rigid2d.velocity.y), ref velocity, velocityDamping);
+	}
+
+	public void EnableMovement(bool b)
+	{
+		CanMove = b;
+		rigid2d.bodyType = b ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
 	}
 }

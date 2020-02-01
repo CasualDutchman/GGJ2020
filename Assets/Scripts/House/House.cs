@@ -7,16 +7,31 @@ using Random = UnityEngine.Random;
 
 public class House : MonoBehaviour
 {
+	public static House instance;
+
 	public int Width = 19;
 	public int Height = 9;
+	Vector2 offset;
 
 	public int MaxRoomSizeX = 2;
+
+	public int MaxGhostCount = 1;
+	public Ghost ghost;
 
 	public Room Stairs;
 	Dictionary<int, List<Room>> rooms = new Dictionary<int, List<Room>>();
 	RoomData[] roomData;
 
-    void Start()
+	List<Vector2> GhostLocations = new List<Vector2>();
+
+	public Sprite Square;
+
+	void Awake()
+	{
+		instance = this;
+	}
+
+	void Start()
     {
 		for (int i = 1; i <= MaxRoomSizeX; i++)
 		{
@@ -37,6 +52,7 @@ public class House : MonoBehaviour
 		roomData = new RoomData[Width * Height];
 		GenerateHouse();
 		VisualizeHouse();
+		SpawnGhosts();
 	}
 
 	void GenerateHouse()
@@ -87,6 +103,9 @@ public class House : MonoBehaviour
 
 				var sizeX = Random.Range(0, Mathf.Min(maxX, MaxRoomSizeX)) + 1;
 
+				if (sizeX > 1)
+					GhostLocations.Add(new Vector2(xPos + (sizeX * 0.5f), y + 0.25f));
+
 				var r = roomData[y * Width + xPos] = new RoomData()
 				{
 					Position = new Vector2(xPos, y),
@@ -109,7 +128,7 @@ public class House : MonoBehaviour
 
 	void VisualizeHouse()
 	{
-		Vector3 offset = new Vector3(Width, Height) * -2f + new Vector3(2, 0);
+		offset = new Vector3(Width, Height) * -2f + new Vector3(2, 0);
 
 		for (int i = 0; i < roomData.Length; i++)
 		{
@@ -119,7 +138,17 @@ public class House : MonoBehaviour
 				continue;
 
 			var go = Instantiate(roomdata.Room, transform);
-			go.transform.position = offset + roomdata.Position.XYO() * 4;
+			go.transform.position = offset + roomdata.Position * 4;
+			go.AddBlack(Square);
+		}
+	}
+
+	void SpawnGhosts()
+	{
+		for (int i = 0; i < MaxGhostCount; i++)
+		{
+			var g = Instantiate(ghost);
+			g.SetPosition(GetRandomGhostLocation());
 		}
 	}
 
@@ -144,6 +173,11 @@ public class House : MonoBehaviour
 		return test;
 	}
 
+	public Vector3 GetRandomGhostLocation()
+	{
+		return offset + GhostLocations[Random.Range(0, GhostLocations.Count)] * 4 - new Vector2(2, 0);
+	}
+
 	private void OnDrawGizmos()
 	{
 		if (roomData != null && roomData.Length > 0)
@@ -155,6 +189,13 @@ public class House : MonoBehaviour
 				if(r != null && r.Attached == null)
 					Gizmos.DrawWireCube(r.Position + new Vector2(r.Room.Size.x * 0.5f, r.Room.Size.y * 0.5f), new Vector3(r.Room.Size.x * 0.9f, r.Room.Size.y * 0.9f, 0.1f));
 			}
+		}
+
+		Gizmos.color = Color.red;
+
+		for (int i = 0; i < GhostLocations.Count; i++)
+		{
+			Gizmos.DrawWireSphere(offset + GhostLocations[i] * 4 - new Vector2(2, 0), 0.1f);
 		}
 	}
 }
