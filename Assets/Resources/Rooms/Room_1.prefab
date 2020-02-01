@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 2526016982190053759}
   - component: {fileID: 2710168986859993268}
   - component: {fileID: 6625697103980263566}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Room_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 4, y: 3.8}
   m_EdgeRadius: 0
 --- !u!1 &3087700673254446201
 GameObject:

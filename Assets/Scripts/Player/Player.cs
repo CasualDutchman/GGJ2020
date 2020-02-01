@@ -9,9 +9,10 @@ public class Player : MonoBehaviour
 {
 	[NonSerialized] public bool OnLadder;
 
+	public LayerMask GroundMask;
 	public LayerMask PlatformMask;
-	public LayerMask PlayerMask;
 	public LayerMask InteractableMask;
+	public LayerMask SewingTableMask;
 
 	public float Speed;
 
@@ -28,6 +29,13 @@ public class Player : MonoBehaviour
 
 	bool CanMove = true;
 
+	public bool press = false;
+	Interactable interactable;
+
+	public bool Warding;
+
+	IPickup holdingItem;
+
 	void Start()
 	{
 		rigid2d = GetComponent<Rigidbody2D>();
@@ -37,16 +45,37 @@ public class Player : MonoBehaviour
 	void OnMovement(InputValue value)
 	{
 		var move = value.Get<Vector2>();
-		movement = move;
+		if(!Warding)
+			movement = move;
 	}
 
-	public bool press = false;
-
-	void OnAction(InputValue value)
+	void OnInteract(InputValue value)
 	{
 		var v = value.Get<float>();
 
 		var newpress = v > 0.1f;
+
+		if(newpress && newpress != press)
+		{
+			if (holdingItem != null)
+			{
+				var sewingtablehit = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.5f), 0.5f, SewingTableMask);
+
+				if (sewingtablehit != null)
+				{
+					var sewingTable = sewingtablehit.GetComponent<SewingTable>();
+					sewingTable.AddSewingKit();
+					Destroy(holdingItem.GetGameObject());
+					holdingItem = null;
+				}
+				else
+				{
+					holdingItem.LetGo();
+					holdingItem = null;
+					goto finish;
+				}
+			}
+		}
 
 		var hitcol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.5f), 0.5f, InteractableMask);
 
@@ -56,50 +85,123 @@ public class Player : MonoBehaviour
 			{
 				if(newpress)
 				{
-					s.PressDown();
+					if (s is IPickup pickup)
+					{
+						pickup.Pickup(this);
+						holdingItem = pickup;
+					}
+					else
+					{
+						s.PressDown();
+						interactable = s;
+					}
 				}
 				else
 				{
 					s.PressUp();
+					interactable = null;
 				}
 			}
 		}
 
+		finish:
+
 		press = newpress;
+	}
+
+	bool grounded = false;
+
+	void OnJump()
+	{
+		if(!Warding && grounded && holdingItem == null)
+			rigid2d.AddForce(new Vector2(0, 300f));
+	}
+
+	void OnWard(InputValue value)
+	{
+		var v = value.Get<float>();
+
+		if (!grounded)
+			return;
+
+		var newpress = v > 0.1f;
+
+		Warding = newpress;
+
+		if (Warding)
+			movement = Vector2.zero;
+	}
+
+	public void DropItem()
+	{
+		if (holdingItem != null)
+		{
+			holdingItem.LetGo();
+			holdingItem = null;
+		}
 	}
 
 	void Update()
 	{
-		if (press)
-		{
-			var hitcol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.5f), 0.5f, InteractableMask);
+		var hitcol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.5f), 0.5f, InteractableMask);
 
-			if (hitcol != null && hitcol.TryGetComponent(out Interactable s))
-				s.Hold();
+		if (hitcol != null && hitcol.TryGetComponent(out Interactable s))
+		{
+			if(press)
+			{
+				if (s.pressed)
+					s.Hold();
+				else
+				{
+					s.PressDown();
+					interactable = s;
+				}
+			}
+			else
+			{
+				if (s.pressed)
+					s.Hold();
+				else
+				{
+					s.PressUp();
+					interactable = null;
+				}
+			}
+		}
+		else
+		{
+			if(interactable != null)
+			{
+				interactable.PressUp();
+				interactable = null;
+			}
 		}
 	}
 
 	void FixedUpdate()
 	{
-		if (movement.y < -0.2f)
+		if (movement.y < -0.9f)
 			fallThrough = true;
 		else 
 			fallThrough = false;
 
-		var hit = Physics2D.Raycast(transform.position.XY() + new Vector2(0, 2f), Vector2.down, 2.1f, PlatformMask);
-		Debug.DrawRay(transform.position + new Vector3(0, 2f), Vector3.down * 2.1f);
+		var groundedHit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, GroundMask);
+		grounded = groundedHit.collider != null;
+
+		var hit = Physics2D.Raycast(transform.position.XY() + new Vector2(0, 2f), Vector2.down, 2.4f, PlatformMask);
+		Debug.DrawRay(transform.position + new Vector3(0, 2f), Vector3.down * 2.4f);
 
 		if(hit.collider != null && hit.collider.TryGetComponent(out PlatformEffector2D pe))
 		{
 			if(fallThrough)
 			{
-				gameObject.layer = LayerMask.NameToLayer("Player");
+				gameObject.layer = LayerMask.NameToLayer("Faller");
 				falling = true;
 			}
 		}
 		else if(falling)
 		{
-			gameObject.layer = 0;
+			gameObject.layer = LayerMask.NameToLayer("Player");
 			falling = false;
 		}
 

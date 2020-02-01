@@ -14,9 +14,25 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Action",
-                    "type": "PassThrough",
+                    "name": "Jump",
+                    "type": "Button",
                     "id": "bb0080d1-7efe-4663-b886-abe2105080e2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Interact",
+                    "type": "PassThrough",
+                    "id": "af6a10aa-03b0-412a-ae78-37720b1464da",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Ward",
+                    "type": "PassThrough",
+                    "id": "0e36a234-31ce-449f-af35-94a6f946a2a7",
                     "expectedControlType": "Integer",
                     "processors": "",
                     "interactions": ""
@@ -41,7 +57,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Action",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c6f2a0b0-0b69-46a2-a651-bb64b79f2694",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf23db32-99ac-4f2d-9abe-37708216b1fd",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

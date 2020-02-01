@@ -26,8 +26,13 @@ public class Ghost : MonoBehaviour
 	Player grabbedPlayer;
 	float grabTimer;
 
+	Room room;
+
+	CapsuleCollider2D collider2d;
+
 	void Start()
     {
+		collider2d = GetComponent<CapsuleCollider2D>();
 		right = Random.value < 0.5f;
 	}
 
@@ -35,6 +40,11 @@ public class Ghost : MonoBehaviour
 	{
 		pos1 = new Vector2(pos.x - 2, pos.y);
 		pos2 = new Vector2(pos.x + 2, pos.y);
+	}
+
+	public void SetRoom(Room r)
+	{
+		room = r;
 	}
 
 	void Update()
@@ -47,10 +57,15 @@ public class Ghost : MonoBehaviour
 			{
 				grabbedPlayer.transform.SetParent(null);
 				grabbedPlayer.EnableMovement(true);
-				SetPosition(House.instance.GetRandomGhostLocation());
+				room.RemoveGhost(this);
+
+				var newRoom = House.instance.GetRandomGhostRoom();
+				newRoom.AddGhost(this);
+				SetRoom(newRoom);
 
 				grabTimer = 0;
 				grabbedPlayer = null;
+				collider2d.isTrigger = true;
 			}
 		}
 	}
@@ -76,10 +91,27 @@ public class Ghost : MonoBehaviour
 	{
 		if (grabbedPlayer == null && collision.TryGetComponent(out Player player))
 		{
-			player.transform.SetParent(transform);
-			player.transform.localPosition = Vector3.zero;
-			grabbedPlayer = player;
-			player.EnableMovement(false);
+			if (player.Warding)
+			{
+				right = !right;
+			}
+			else
+			{
+				player.transform.SetParent(transform);
+				player.transform.localPosition = Vector3.zero;
+				grabbedPlayer = player;
+				player.DropItem();
+				player.EnableMovement(false);
+				collider2d.isTrigger = false;
+			}
+		}
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if(collision.transform.TryGetComponent(out Player player))
+		{
+			player.DropItem();
 		}
 	}
 }

@@ -69,7 +69,7 @@ PlatformEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 1335
+    m_Bits: 3639
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 2526016982190053759}
   - component: {fileID: 2710168986859993268}
   - component: {fileID: 4962866410027557389}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Room_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 8}
+  m_Size: {x: 4, y: 8.8}
   m_EdgeRadius: 0
 --- !u!1 &2833882273932461748
 GameObject:
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 4689285403282360294}
   - component: {fileID: 89496526166303464}
   - component: {fileID: 1623769673089749546}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Zone (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ PlatformEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 1335
+    m_Bits: 3639
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
