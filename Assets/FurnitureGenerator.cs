@@ -133,7 +133,7 @@ public class FurnitureGenerator : MonoBehaviour
             var randomFurnitureName = sittingRoomFurniture[Random.Range(0, sittingRoomFurniture.Length)];
             var furniture = GenerateFurniture(randomFurnitureName);
 
-            furniture.transform.position = new Vector2((roomWidth / amountOfFurniture) * i - roomWidth / 4, 0);
+            furniture.transform.localPosition = new Vector2((roomWidth / amountOfFurniture) * i - roomWidth / 4, 0);
         }
     }
 

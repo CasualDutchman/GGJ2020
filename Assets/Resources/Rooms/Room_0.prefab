@@ -159,7 +159,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExcludeInResources: 0
   Size: {x: 2, y: 1}
-  playerCount: 0
   visible: 0
 --- !u!61 &2610948835992015442
 BoxCollider2D:
@@ -377,7 +376,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 58d73b2f52b5d81469d8e730f18a217e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28114c1b976aa1ef0a2ab50beaeeb8f9, type: 3}
   m_Color: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -188,6 +188,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6045334884184584255, guid: a5061d3d4fbcd7e4fa1074c9961b4162,
+        type: 3}
+      propertyPath: m_DrawMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8165805531253484597, guid: a5061d3d4fbcd7e4fa1074c9961b4162,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 20.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8165805531253484597, guid: a5061d3d4fbcd7e4fa1074c9961b4162,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 40.96
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5061d3d4fbcd7e4fa1074c9961b4162, type: 3}
 --- !u!1 &1191665434

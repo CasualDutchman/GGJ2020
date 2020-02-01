@@ -162,9 +162,8 @@ MonoBehaviour:
   DoorPrefab: {fileID: 5428671671526100609, guid: 99c57f1311e00c9499bebf5bc0b2599b,
     type: 3}
   Stairs: {fileID: 2710168986859993268, guid: 514777ba1e37637418e41f43ad2f6a9f, type: 3}
-  priceRoom: {fileID: 4386540089284755461, guid: e97e018d3dd0fcc418df227758ff12fc,
-    type: 3}
-  TableRoom: {fileID: 9207773027296556668, guid: ccfe85e6606b332479cb3806fe7fb6ef,
+  priceRoom: {fileID: 87009307729793324, guid: e97e018d3dd0fcc418df227758ff12fc, type: 3}
+  TableRoom: {fileID: 3249336699158214152, guid: ccfe85e6606b332479cb3806fe7fb6ef,
     type: 3}
   FuseBoxRoom: {fileID: 3902379155627023720, guid: 1729fac69e83efa4e83ebc56ee311517,
     type: 3}
