@@ -119,7 +119,8 @@ GameObject:
   - component: {fileID: 967890883046582756}
   - component: {fileID: 863812597429798959}
   - component: {fileID: 2610948835992015442}
-  m_Layer: 12
+  - component: {fileID: 5280648033259058626}
+  m_Layer: 0
   m_Name: Room_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,8 +185,20 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8, y: 3.8}
+  m_Size: {x: 8, y: 4}
   m_EdgeRadius: 0
+--- !u!114 &5280648033259058626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967890883046582757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbd97c4ad9905a28b8839b9ed05c950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4279673913851893503
 GameObject:
   m_ObjectHideFlags: 0
